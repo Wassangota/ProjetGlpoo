@@ -11,6 +11,7 @@ public class MainServer {
 	
 	public MainServer() {
 		System.out.println("Ceci est un serveur");
+		start();
 	}
 	
 	public void start() {
