@@ -8,9 +8,12 @@ public class BouclePrincipale implements Runnable{
 	
 	private ServerSocket serverSocket;
 	private Socket socket;
+	private Thread tempThread;
+	
 	
 	public BouclePrincipale(ServerSocket serverSocket) {
 		this.serverSocket = serverSocket;
+		Singletons.setBP(this);
 	}
 	
 	@Override
@@ -22,6 +25,12 @@ public class BouclePrincipale implements Runnable{
 				System.out.println("Client "+socket.getInetAddress()+" etablished connexion to the server.");
 				
 				//A modifier en dessous pour lancer le thread perso du client
+				
+				tempThread = new Thread(new ServerClientsSend(socket));
+				tempThread.start();
+				
+				tempThread = new Thread(new ServerClientsReceive(socket));
+				tempThread.start();
 				
 				//////////
 				
