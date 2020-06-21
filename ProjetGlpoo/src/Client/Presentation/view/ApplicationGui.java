@@ -2,8 +2,8 @@ package Client.Presentation.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
+
 
 public class ApplicationGui {
 	
@@ -15,8 +15,9 @@ public class ApplicationGui {
 		mainFrame.setLayout(new BorderLayout());
 		mainFrame.revalidate();
 		
-		
 		mainFrame.add(new HomePanel(null, mainFrame));
+    //mainFrame.add(new LoginPanel(null));
+		
 		
 		//mainFrame.pack();
 		mainFrame.setVisible(true);
