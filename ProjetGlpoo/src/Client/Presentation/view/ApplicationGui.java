@@ -2,12 +2,18 @@ package Client.Presentation.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+
 import javax.swing.JFrame;
+
+import Client.Presentation.controller.MainClient;
+import Client.Presentation.controller.Singletons;
 
 
 public class ApplicationGui {
 	
 	public ApplicationGui() {
+		new MainClient();
+		
 		JFrame mainFrame = new JFrame("Chat en ligne");
 		mainFrame.setSize(new Dimension(1200,700));
 		mainFrame.setResizable(false);
@@ -15,7 +21,7 @@ public class ApplicationGui {
 		mainFrame.setLayout(new BorderLayout());
 		mainFrame.revalidate();
 		
-		mainFrame.add(new HomePanel(null, mainFrame));
+		mainFrame.add(new HomePanel(Singletons.getOutput(),Singletons.getInput(), mainFrame));
     //mainFrame.add(new LoginPanel(null));
 		
 		

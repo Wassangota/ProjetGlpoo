@@ -14,6 +14,7 @@ public class ClientServerReceive implements Runnable {
 		this.socket = socket;
 		try {
 			this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			Singletons.setInput(in);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

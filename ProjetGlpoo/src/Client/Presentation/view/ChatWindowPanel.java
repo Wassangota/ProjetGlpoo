@@ -5,12 +5,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -20,7 +22,7 @@ import javax.swing.JTextField;
 public class ChatWindowPanel extends JPanel {
 	
 	
-	public ChatWindowPanel(PrintWriter out) {
+	public ChatWindowPanel(PrintWriter out, BufferedReader in, JFrame frame) {
 		
 		setLayout(new BorderLayout());
 			

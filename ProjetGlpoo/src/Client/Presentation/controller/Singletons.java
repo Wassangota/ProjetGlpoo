@@ -18,6 +18,19 @@ public class Singletons {
 		}
 	}
 	
+	static void setInput(BufferedReader in) {
+		bufferedReaderInstance = in;
+	}
+	
+	public static BufferedReader getInput() {
+		if(bufferedReaderInstance != null) {
+			return bufferedReaderInstance;
+		}else {
+			System.out.println("Input null");
+			return null;
+		}
+	}
+	
 	public static PrintWriter getOutput() {
 		if(printWriterInstance != null) {
 			return printWriterInstance;

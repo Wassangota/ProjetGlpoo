@@ -3,6 +3,8 @@ package Server.Presentation.Controller;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import Server.Presentation.Model.XmlMethods;
+
 public class MainServer {
 	
 	private static int port = 5213;
@@ -15,7 +17,8 @@ public class MainServer {
 	}
 	
 	public void start() {
-			
+		XmlMethods.loadXMLData();
+		XmlMethods.readAccount();
 		try {
 			serverSocket = new ServerSocket(port);
 			mainThread = new Thread(new BouclePrincipale(serverSocket));

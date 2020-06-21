@@ -19,10 +19,10 @@ public class MainClient {
 			socket = new Socket("127.0.0.1", 5213);
 			
 			t = new Thread(new ClientServerSend(socket));
-			t.start();
+			//t.start();
 			
 			t = new Thread(new ClientServerReceive(socket));
-			t.start();
+			//t.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

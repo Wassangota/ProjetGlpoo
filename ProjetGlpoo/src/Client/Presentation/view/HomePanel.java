@@ -4,7 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,8 +26,15 @@ public class HomePanel extends JPanel{
 	 */
 	
 	private static final long serialVersionUID = 3138392320751424537L;
+	
+	private BufferedReader in;
+	private PrintWriter out;
 
-		public HomePanel(PrintWriter out, JFrame frame) {
+		public HomePanel(PrintWriter out, BufferedReader in, JFrame frame) {
+			
+			this.out = out;
+			this.in = in;
+			
 			setLayout(new GridLayout(5,2));
 			setBackground(Color.BLACK);
 			
@@ -38,7 +49,7 @@ public class HomePanel extends JPanel{
 			JButton loginButton = new JButton("Login");
 			loginButton.setPreferredSize(new Dimension(100,25));
 			  loginButton.addActionListener(e->{
-				  	frame.setContentPane(new LoginPanel(out));
+				  	frame.setContentPane(new LoginPanel(out, in, frame));
 					frame.revalidate();
 				});
 			
@@ -61,6 +72,18 @@ public class HomePanel extends JPanel{
 		
 		@SuppressWarnings("deprecation")
 		public void createAccount() {
+			String msg;
+			out.println("SIGNIN");
+			out.flush();
+			try {
+				msg = in.readLine();
+				if(!msg.equals("OK")) {
+					return;
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
 	        JFrame newFrame = new JFrame("Create account");
 	        newFrame.setMinimumSize(new Dimension(400,10));
 	        newFrame.setLayout(new BorderLayout());
@@ -90,7 +113,31 @@ public class HomePanel extends JPanel{
 	            }
 	            else if(text2.getText().equals(text3.getText())){
 	            	error.setText("");
-	            	SwingUtilities.updateComponentTreeUI(newFrame);
+	            	out.println(text1.getText());
+	            	out.println(text2.getText());
+	            	out.println(text4.getText());
+	            	out.flush();
+	            	
+	            	try {
+						String msgs = in.readLine();
+						if(!msgs.equals("OK")) {
+							error.setText(msgs);
+			            	error.setForeground(Color.RED);
+			            	out.println("SIGNIN");
+			            	out.flush();
+			            	msgs = in.readLine();
+							if(!msgs.equals("OK")) {
+								return;
+							}
+			            	SwingUtilities.updateComponentTreeUI(newFrame);
+						}else {
+							newFrame.setVisible(false);
+							newFrame.dispose();
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+	            	
 	            }
 	        });
 	        

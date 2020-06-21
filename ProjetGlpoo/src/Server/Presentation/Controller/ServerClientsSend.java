@@ -20,11 +20,11 @@ public class ServerClientsSend implements Runnable{
 	public void run() {
 		sc = new Scanner(System.in);
 		String msg;
-		while(true) {
+		/*while(true) {
 			msg = sc.nextLine();
 			this.out.println("Serveur : "+msg);
 			this.out.flush();
-		}
+		}*/
 	}
 
 }

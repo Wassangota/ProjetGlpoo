@@ -3,9 +3,12 @@ package Client.Presentation.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -18,7 +21,19 @@ public class LoginPanel extends JPanel{
 	private static final long serialVersionUID = 1481780085197891083L;
 
 	@SuppressWarnings("deprecation")
-	public LoginPanel(PrintWriter out) {
+	public LoginPanel(PrintWriter out, BufferedReader in, JFrame frame) {
+		String msg;
+		out.println("LOGIN");
+		out.flush();
+		try {
+			msg = in.readLine();
+			if(!msg.equals("OKTESTLOG")) {
+				return;
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 		setLayout(new GridLayout(5,3));
 		setBackground(Color.BLACK);
 		
@@ -38,6 +53,26 @@ public class LoginPanel extends JPanel{
 		JButton loginButton = new JButton("Login");
 		loginButton.setPreferredSize(new Dimension(100,25));
 		loginButton.addActionListener(e->{
+			out.println(login.getText());
+			out.println(password.getText());
+			out.flush();
+			try {
+				String msgs = in.readLine();
+				if(msgs.equals("OKLOG")) {
+					System.out.println("Reussite");
+					frame.setContentPane(new ChatWindowPanel(out, in, frame));
+					frame.revalidate();
+				}else {
+					out.print("LOGIN");
+					out.flush();
+					msgs = in.readLine();
+					if(!msgs.equals("OKTESTLOG")) {
+						return;
+					}
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			System.out.println("Login :" + login.getText()+"\nPassword "+password.getText());
 		});
 		
