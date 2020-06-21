@@ -15,9 +15,9 @@ public class ApplicationGui {
 		mainFrame.setLayout(new BorderLayout());
 		mainFrame.revalidate();
 		
+		mainFrame.add(new HomePanel(null, mainFrame));
+    //mainFrame.add(new LoginPanel(null));
 		
-		//mainFrame.add(new LoginPanel(null));
-		mainFrame.add(new ChatWindowPanel(null));
 		
 		//mainFrame.pack();
 		mainFrame.setVisible(true);
