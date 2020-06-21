@@ -13,6 +13,11 @@ public class Conversation {
 		listMsg = new ArrayList<String>();
 	}
 
+	public Conversation(String identifiant, List<String> listMSG) {
+		this.identifiant = identifiant;
+		listMsg = listMSG;
+	}
+
 	public String getIdentifiant() {
 		return this.identifiant;
 	}

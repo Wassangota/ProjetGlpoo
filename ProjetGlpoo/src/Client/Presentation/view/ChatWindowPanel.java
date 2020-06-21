@@ -6,7 +6,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -21,6 +25,7 @@ import javax.swing.JTextField;
 
 public class ChatWindowPanel extends JPanel {
 	
+	JScrollPane scroll;
 	
 	public ChatWindowPanel(PrintWriter out, BufferedReader in, JFrame frame) {
 		
@@ -54,12 +59,36 @@ public class ChatWindowPanel extends JPanel {
 		JButton createDisc = new JButton("Créer une discussion");
 		
 		JPanel chercherDisc = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
+		JPanel convs = new JPanel();
+		DefaultListModel<String> listeConv = new DefaultListModel<String>();
+		//remplir la liste
+		List<String> listConvers = new ArrayList<String>();//this.getConversations(out, in);
+		for(int i = 0;i<listConvers.size();i++) {
+			listeConv.addElement(listConvers.get(i));
+		}
+		JList<String> listConv = new JList<String>(listeConv);
+		scroll = new JScrollPane(listConv);
 		JTextField chercherDiscussion = new JTextField();
 		
 		createDisc.addActionListener(e->{
 			if(chercherDiscussion.getText().equals("") || chercherDiscussion.getText() != null) {
 				out.println("ADDCONV");
 				out.println(chercherDiscussion.getText());
+				out.flush();
+				try {
+					TimeUnit.SECONDS.sleep(1);
+					DefaultListModel<String> listeConve = new DefaultListModel<String>();
+					//remplir la liste
+					List<String> listConverse = this.getConversations(out, in);
+					for(int i = 0;i<listConverse.size();i++) {
+						listeConv.addElement(listConverse.get(i));
+					}
+					JList<String> listConve = new JList<String>(listeConve);
+					scroll = new JScrollPane(listConve);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		Discussion.add(createDisc);
@@ -76,11 +105,8 @@ public class ChatWindowPanel extends JPanel {
 		
 		topleftPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
 		
-		JPanel convs = new JPanel();
-		DefaultListModel<String> listeConv = new DefaultListModel<String>();
-		//remplir la liste
-		JList<String> listConv = new JList<String>(listeConv);
-		JScrollPane scroll = new JScrollPane(listConv);
+		
+		
 		scroll.setPreferredSize(new Dimension(270,320));
 		convs.add(scroll);
 		
@@ -119,5 +145,23 @@ public class ChatWindowPanel extends JPanel {
 		
 		
 		
+	}
+	
+	public List<String> getConversations(PrintWriter out, BufferedReader in){
+		out.println("GETCONVS");
+		out.flush();
+		String msg;
+		List<String> conversations = new ArrayList<String>();
+		try {
+			msg = in.readLine();
+			while(msg.equals("add")) {
+				msg = in.readLine();
+				conversations.add(msg);
+				msg = in.readLine();
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return conversations;
 	}
 }

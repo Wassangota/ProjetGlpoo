@@ -39,24 +39,19 @@ public class XmlMethods {
 		for (int i = 0; i<nodes.getLength(); i++) {
 			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
 				Element currentElement = (Element) nodes.item(i);
-				if (currentElement.getNodeName().equals("account")) 	{
+				if (currentElement.getNodeName().equals("conversation")) 	{
 					try {
 						
 						String identifiant = currentElement.getElementsByTagName("identifiant").item(0).getTextContent();
-						String password = currentElement.getElementsByTagName("password").item(0).getTextContent();
-						String pseudo = currentElement.getElementsByTagName("pseudo").item(0).getTextContent();
-						Element secondCurrentElement = (Element) currentElement.getElementsByTagName("listContact").item(0);
+						Element secondCurrentElement = (Element) currentElement.getElementsByTagName("listMessage").item(0);
 						List<String> listContact = new ArrayList<String>();
 						for(int j = 0; j<secondCurrentElement.getChildNodes().getLength();j++) {
 							listContact.add(secondCurrentElement.getChildNodes().item(j).getTextContent());
 						}
 						
-						//verify that I read everything correctly:
-						System.out.println(identifiant + " " + password + " " + pseudo);
+						Conversation newConversation = new Conversation(identifiant, listContact);
 						
-						Account newClient = new Account(identifiant, password, pseudo);
-						
-						listCompte.add(newClient);
+						listConversation.add(newConversation);
 						
 					} catch (Exception ex) {
 						System.out.println("Something is wrong with the XML client element");
@@ -86,11 +81,16 @@ public class XmlMethods {
 						for(int j = 0; j<secondCurrentElement.getChildNodes().getLength();j++) {
 							listContact.add(secondCurrentElement.getChildNodes().item(j).getTextContent());
 						}
+						Element thirdCurrentElement = (Element) currentElement.getElementsByTagName("listConversations").item(0);
+						List<String> listConv = new ArrayList<String>();
+						for(int j = 0; j<thirdCurrentElement.getChildNodes().getLength();j++) {
+							listConv.add(thirdCurrentElement.getChildNodes().item(j).getTextContent());
+						}
 						
 						//verify that I read everything correctly:
 						System.out.println(identifiant + " " + password + " " + pseudo);
 						
-						Account newClient = new Account(identifiant, password, pseudo);
+						Account newClient = new Account(identifiant, password, pseudo, listContact, listConv);
 						
 						listCompte.add(newClient);
 						
@@ -169,6 +169,15 @@ public class XmlMethods {
 					listContact.appendChild(idElement);
 				}
 				account.appendChild(listContact);
+				Element listConversations = document.createElement("listConversations");
+				//save contacts
+				for(int k=0;k<listCompte.get(i).getConversations().size();k++) {
+					String id = listCompte.get(i).getConversations().get(k);
+					Element idElement = document.createElement("identifiant");
+					idElement.appendChild(document.createTextNode(id));
+					listConversations.appendChild(idElement);
+				}
+				account.appendChild(listConversations);
 				
 				root.appendChild(account);
 			}
@@ -201,6 +210,15 @@ public class XmlMethods {
 		for(int i = 0;i<listCompte.size();i++) {
 			if(listCompte.get(i).getIdentifiant().equals(id)) {
 				return listCompte.get(i);
+			}
+		}
+		return null;
+	}
+	
+	public static Conversation getConversation(String id) {
+		for(int i = 0;i<listConversation.size();i++) {
+			if(listConversation.get(i).getIdentifiant().equals(id)) {
+				return listConversation.get(i);
 			}
 		}
 		return null;
@@ -271,6 +289,10 @@ public class XmlMethods {
 		listCompte = new ArrayList<Account>();
 		
 	}
+	
+	public static void createConversationList() {
+		listConversation = new ArrayList<Conversation>();
+	}
 
 	public static String getPseudoOfAccount(String string) {
 		for(int i = 0; i<listCompte.size();i++) {
@@ -280,9 +302,26 @@ public class XmlMethods {
 		}
 		return "AccountDeleted";
 	}
+	
+	public static String getIdOfPseudo(String string) {
+		for(int i = 0; i<listCompte.size();i++) {
+			if(listCompte.get(i).getPseudo().equals(string)) {
+				return listCompte.get(i).getIdentifiant();
+			}
+		}
+		return "AccountDeleted";
+	}
 
 	public static void addConversation(String identifiant, String msg) {
-		
+		listConversation.add(new Conversation(identifiant+msg));
+		for(int i = 0; i<listCompte.size();i++) {
+			if(listCompte.get(i).getIdentifiant().equals(identifiant)) {
+				listCompte.get(i).addConversation(identifiant+msg);
+			}
+			if(listCompte.get(i).getIdentifiant().equals(getIdOfPseudo(msg))) {
+				listCompte.get(i).addConversation(identifiant+msg);
+			}
+		}
 	}
 	
 }

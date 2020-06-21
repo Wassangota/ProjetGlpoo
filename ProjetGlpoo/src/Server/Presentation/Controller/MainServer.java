@@ -18,8 +18,9 @@ public class MainServer {
 	
 	public void start() {
 		XmlMethods.loadXMLData();
-		//XmlMethods.createAccountlist();
-		XmlMethods.readAccount();
+		XmlMethods.createAccountlist();
+		XmlMethods.createConversationList();
+		//XmlMethods.readAccount();
 		try {
 			serverSocket = new ServerSocket(port);
 			mainThread = new Thread(new BouclePrincipale(serverSocket));

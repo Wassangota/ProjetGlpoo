@@ -9,14 +9,25 @@ public class Account {
 	private String password;
 	private String pseudo;
 	private List<String> listContact;
+	private List<String> listConversation;
 	
 	public Account(String id, String pw, String pseudo) {
 		this.identifiant = id;
 		this.password = pw;
 		this.pseudo = pseudo;
 		this.listContact = new ArrayList<String>();
+		this.listConversation = new ArrayList<String>();
 	}
 	
+	public Account(String id, String pw, String pseudo, List<String> listContact,
+			List<String> listConversation) {
+		this.identifiant = id;
+		this.password = pw;
+		this.pseudo = pseudo;
+		this.listContact = listContact;
+		this.listConversation = listConversation;
+	}
+
 	public List<String> getContact(){
 		return this.listContact;
 	}
@@ -47,6 +58,14 @@ public class Account {
 
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
+	}
+
+	public List<String> getConversations(){
+		return this.listConversation;
+	}
+	
+	public void addConversation(String string) {
+		this.listConversation.add(string);
 	}
 
 }

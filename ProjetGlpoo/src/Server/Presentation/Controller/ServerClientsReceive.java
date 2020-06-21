@@ -92,6 +92,13 @@ public class ServerClientsReceive implements Runnable {
 					}else if(msg.equals("ADDCONV")) {
 						msg = in.readLine();
 						XmlMethods.addConversation(identifiant,msg);
+					}else if(msg.equals("GETCONVS")) {
+						Account compte = XmlMethods.getAccount(identifiant);
+						for(int j = 0;j<compte.getConversations().size();j++) {
+							out.println("Add");
+							out.println(compte.getConversations().get(j));
+							out.flush();
+						}
 					}
 					
 					break;
