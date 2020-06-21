@@ -41,6 +41,9 @@ public class ChatWindowPanel extends JPanel {
 		contactform1.add(selecContact);
 		listContact.add(contactform1);
 		JButton plus = new JButton("+");
+		plus.addActionListener(e->{
+			new AddContactFrame();
+		});
 		contactform2.add(plus);
 		listContact.add(contactform2);
 		listContact.setBorder(BorderFactory.createTitledBorder("Contact"));
