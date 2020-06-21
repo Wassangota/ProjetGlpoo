@@ -2,8 +2,8 @@ package Client.Presentation.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
+
 
 public class ApplicationGui {
 	
@@ -16,7 +16,8 @@ public class ApplicationGui {
 		mainFrame.revalidate();
 		
 		
-		mainFrame.add(new LoginPanel(null));
+		//mainFrame.add(new LoginPanel(null));
+		mainFrame.add(new ChatWindowPanel(null));
 		
 		//mainFrame.pack();
 		mainFrame.setVisible(true);
