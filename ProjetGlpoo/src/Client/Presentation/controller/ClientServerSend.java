@@ -16,6 +16,7 @@ public class ClientServerSend implements Runnable{
 		this.socket = socket;
 		try {
 			this.out = new PrintWriter(socket.getOutputStream());
+			Singletons.setOutput(out);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

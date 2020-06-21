@@ -28,7 +28,6 @@ public class BouclePrincipale implements Runnable{
 				
 				tempThread = new Thread(new ServerClientsSend(socket));
 				tempThread.start();
-				
 				tempThread = new Thread(new ServerClientsReceive(socket));
 				tempThread.start();
 				
