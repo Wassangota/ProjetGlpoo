@@ -11,13 +11,9 @@ public class ServerClientsSend implements Runnable{
 	private PrintWriter out;
 	private Scanner sc;
 	
-	public ServerClientsSend(Socket socket) {
+	public ServerClientsSend(Socket socket, PrintWriter out) {
 		this.socket = socket;
-		try {
-			this.out = new PrintWriter(socket.getOutputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.out = out;
 	}
 	
 	@Override
