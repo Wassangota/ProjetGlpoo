@@ -15,6 +15,7 @@ public class ServerClientsReceive implements Runnable {
 	private BufferedReader in;
 	private PrintWriter out;
 	private int State;
+	private String identifiant;
 	
 	public ServerClientsReceive(Socket socket) {
 		this.socket = socket;
@@ -51,6 +52,7 @@ public class ServerClientsReceive implements Runnable {
 							out.println("OKLOG");
 							out.flush();
 							State = 1;
+							this.identifiant = id;
 							envoieMessage.start();
 						}else {
 							out.println("ERROR");
@@ -77,6 +79,20 @@ public class ServerClientsReceive implements Runnable {
 					
 					break;
 				case 1:
+					
+					if(msg.equals("GETCONTACT")) {
+						Account compte = XmlMethods.getAccount(identifiant);
+						for(int j = 0;j<compte.getContact().size();j++) {
+							out.println("Add");
+							out.println(XmlMethods.getPseudoOfAccount(compte.getContact().get(j)));
+							out.flush();
+						}
+						out.println("stop");
+						out.flush();
+					}else if(msg.equals("ADDCONV")) {
+						msg = in.readLine();
+						XmlMethods.addConversation(identifiant,msg);
+					}
 					
 					break;
 				

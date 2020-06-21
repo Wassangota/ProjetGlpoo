@@ -12,6 +12,10 @@ public class Conversation {
 		this.identifiant = identifiant;
 		listMsg = new ArrayList<String>();
 	}
+
+	public String getIdentifiant() {
+		return this.identifiant;
+	}
 	
 	public List<String> getMessage(){
 		return this.listMsg;

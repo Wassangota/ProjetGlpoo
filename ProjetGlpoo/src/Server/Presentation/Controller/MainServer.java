@@ -18,6 +18,7 @@ public class MainServer {
 	
 	public void start() {
 		XmlMethods.loadXMLData();
+		//XmlMethods.createAccountlist();
 		XmlMethods.readAccount();
 		try {
 			serverSocket = new ServerSocket(port);

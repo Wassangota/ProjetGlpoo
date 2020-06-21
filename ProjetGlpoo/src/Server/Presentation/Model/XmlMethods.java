@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,6 +28,43 @@ public class XmlMethods {
 	private static DocumentBuilder documentBuilder;
 	
 	private static List<Account> listCompte;
+	private static List<Conversation> listConversation;
+	
+	public static void readConversation() {
+		listConversation = new ArrayList<Conversation>();
+		
+		NodeList nodes = parseXMLFile("files/conversations.xml");
+		if (nodes == null) return;
+		
+		for (int i = 0; i<nodes.getLength(); i++) {
+			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
+				Element currentElement = (Element) nodes.item(i);
+				if (currentElement.getNodeName().equals("account")) 	{
+					try {
+						
+						String identifiant = currentElement.getElementsByTagName("identifiant").item(0).getTextContent();
+						String password = currentElement.getElementsByTagName("password").item(0).getTextContent();
+						String pseudo = currentElement.getElementsByTagName("pseudo").item(0).getTextContent();
+						Element secondCurrentElement = (Element) currentElement.getElementsByTagName("listContact").item(0);
+						List<String> listContact = new ArrayList<String>();
+						for(int j = 0; j<secondCurrentElement.getChildNodes().getLength();j++) {
+							listContact.add(secondCurrentElement.getChildNodes().item(j).getTextContent());
+						}
+						
+						//verify that I read everything correctly:
+						System.out.println(identifiant + " " + password + " " + pseudo);
+						
+						Account newClient = new Account(identifiant, password, pseudo);
+						
+						listCompte.add(newClient);
+						
+					} catch (Exception ex) {
+						System.out.println("Something is wrong with the XML client element");
+					}
+				}
+			}  
+		}
+	}
 	
 	public static void readAccount(){
 		listCompte = new ArrayList<Account>();
@@ -45,6 +81,12 @@ public class XmlMethods {
 						String identifiant = currentElement.getElementsByTagName("identifiant").item(0).getTextContent();
 						String password = currentElement.getElementsByTagName("password").item(0).getTextContent();
 						String pseudo = currentElement.getElementsByTagName("pseudo").item(0).getTextContent();
+						Element secondCurrentElement = (Element) currentElement.getElementsByTagName("listContact").item(0);
+						List<String> listContact = new ArrayList<String>();
+						for(int j = 0; j<secondCurrentElement.getChildNodes().getLength();j++) {
+							listContact.add(secondCurrentElement.getChildNodes().item(j).getTextContent());
+						}
+						
 						//verify that I read everything correctly:
 						System.out.println(identifiant + " " + password + " " + pseudo);
 						
@@ -58,6 +100,38 @@ public class XmlMethods {
 				}
 			}  
 		}
+	}
+	
+	public static void writeConversation() {
+		Document document = createXMLDocument();
+		if (document == null) return;
+
+ 		// create root element
+		Element root = document.createElement("conversations");
+		document.appendChild(root);
+		
+		for(int i = 0; i<listConversation.size();i++) {
+			//save one "client" element; create a loop to save more elements!!
+			Element account = document.createElement("conversation");
+			String identifiant = listConversation.get(i).getIdentifiant();
+			Element identifiantElement = document.createElement("identifiant");
+			identifiantElement.appendChild(document.createTextNode(identifiant));
+			account.appendChild(identifiantElement);
+			Element listMessage = document.createElement("listMessage");
+			//save contacts
+			for(int k=0;k<listCompte.get(i).getContact().size();k++) {
+				String id = listCompte.get(i).getContact().get(k);
+				Element idElement = document.createElement("message");
+				idElement.appendChild(document.createTextNode(id));
+				listMessage.appendChild(idElement);
+			}
+			account.appendChild(listMessage);
+			
+			root.appendChild(account);
+		}
+	
+	createXMLFile(document, "files/conversations.xml");
+		
 	}
 	
 	public static void writeAccount() {
@@ -85,6 +159,16 @@ public class XmlMethods {
 				Element pseudoElement = document.createElement("pseudo");
 				pseudoElement.appendChild(document.createTextNode(pseudo));
 				account.appendChild(pseudoElement);
+				//save listContact
+				Element listContact = document.createElement("listContact");
+				//save contacts
+				for(int k=0;k<listCompte.get(i).getContact().size();k++) {
+					String id = listCompte.get(i).getContact().get(k);
+					Element idElement = document.createElement("identifiant");
+					idElement.appendChild(document.createTextNode(id));
+					listContact.appendChild(idElement);
+				}
+				account.appendChild(listContact);
 				
 				root.appendChild(account);
 			}
@@ -111,6 +195,15 @@ public class XmlMethods {
 		}
 		
 		return "OK";
+	}
+	
+	public static Account getAccount(String id) {
+		for(int i = 0;i<listCompte.size();i++) {
+			if(listCompte.get(i).getIdentifiant().equals(id)) {
+				return listCompte.get(i);
+			}
+		}
+		return null;
 	}
 	
 	public static void createXMLFile(Document document, String filePath)
@@ -172,6 +265,24 @@ public class XmlMethods {
 
 	public static void addAccount(Account compte) {
 		listCompte.add(compte);
+	}
+
+	public static void createAccountlist() {
+		listCompte = new ArrayList<Account>();
+		
+	}
+
+	public static String getPseudoOfAccount(String string) {
+		for(int i = 0; i<listCompte.size();i++) {
+			if(listCompte.get(i).getIdentifiant().equals(string)) {
+				return listCompte.get(i).getPseudo();
+			}
+		}
+		return "AccountDeleted";
+	}
+
+	public static void addConversation(String identifiant, String msg) {
+		
 	}
 	
 }

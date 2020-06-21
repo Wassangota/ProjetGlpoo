@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 public class AddContactFrame extends JFrame{
 	
 
-	public AddContactFrame() {
+	public AddContactFrame(PrintWriter out) {
 		new JFrame("add contact");
 		setSize(new Dimension(640,260));
 		setResizable(false);

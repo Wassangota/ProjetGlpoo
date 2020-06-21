@@ -44,7 +44,7 @@ public class ChatWindowPanel extends JPanel {
 		listContact.add(contactform1);
 		JButton plus = new JButton("+");
 		plus.addActionListener(e->{
-			new AddContactFrame();
+			new AddContactFrame(out);
 		});
 		contactform2.add(plus);
 		listContact.add(contactform2);
@@ -52,13 +52,22 @@ public class ChatWindowPanel extends JPanel {
 		
 		JPanel Discussion = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JButton createDisc = new JButton("Créer une discussion");
-		Discussion.add(createDisc);
 		
 		JPanel chercherDisc = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JTextField chercherDiscussion = new JTextField();
+		
+		createDisc.addActionListener(e->{
+			if(chercherDiscussion.getText().equals("") || chercherDiscussion.getText() != null) {
+				out.println("ADDCONV");
+				out.println(chercherDiscussion.getText());
+			}
+		});
+		Discussion.add(createDisc);
+		
+		
 		chercherDiscussion.setColumns(25);
 		chercherDisc.add(chercherDiscussion);
-		chercherDisc.setBorder(BorderFactory.createTitledBorder("Chercher une Discussion"));
+		chercherDisc.setBorder(BorderFactory.createTitledBorder("Non du contact avec qui crée la discussion"));
 		
 		topleftPanel.add(pseudo);
 		topleftPanel.add(listContact);
@@ -85,10 +94,6 @@ public class ChatWindowPanel extends JPanel {
 		
 		JPanel conversation = new JPanel();
 		DefaultListModel<String> messages = new DefaultListModel<String>();
-		messages.addElement("Eric : Bonjour tout le monde");
-		messages.addElement("Steven : ca va ?");
-		Thread test = new Thread(new testMessage(messages));
-		test.start();
 		JList<String> listMessage = new JList<String>(messages);
 		JScrollPane scrollMessage = new JScrollPane(listMessage);
 		scrollMessage.setPreferredSize(new Dimension(890,550));
