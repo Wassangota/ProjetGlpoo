@@ -89,7 +89,7 @@ public class ChatWindowPanel extends JPanel {
 		test.start();
 		JList<String> listMessage = new JList<String>(messages);
 		JScrollPane scrollMessage = new JScrollPane(listMessage);
-		scrollMessage.setPreferredSize(new Dimension(890,550));
+		scrollMessage.setPreferredSize(new Dimension(860,550));
 		conversation.add(scrollMessage);
 		
 		rightPanel.add(conversation,BorderLayout.CENTER);
