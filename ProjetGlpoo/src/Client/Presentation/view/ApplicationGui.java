@@ -16,7 +16,7 @@ public class ApplicationGui {
 		mainFrame.revalidate();
 		
 		
-		mainFrame.add(new LoginPanel(null));
+		mainFrame.add(new HomePanel(null, mainFrame));
 		
 		//mainFrame.pack();
 		mainFrame.setVisible(true);
