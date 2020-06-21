@@ -26,8 +26,7 @@ public class BouclePrincipale implements Runnable{
 				
 				//A modifier en dessous pour lancer le thread perso du client
 				
-				tempThread = new Thread(new ServerClientsSend(socket));
-				tempThread.start();
+				
 				tempThread = new Thread(new ServerClientsReceive(socket));
 				tempThread.start();
 				
